@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "description": "Stage registry that drives the CI matrix job. Add enabled:false to disable a stage without removing it.",
+  "stages": [
+    {"name": "secrets",   "owner": "P2", "enabled": true,  "needs_image": false},
+    {"name": "sast",      "owner": "P2", "enabled": true,  "needs_image": false},
+    {"name": "sca",       "owner": "P2", "enabled": true,  "needs_image": false},
+    {"name": "iac",       "owner": "P3", "enabled": true,  "needs_image": false},
+    {"name": "container", "owner": "P3", "enabled": true,  "needs_image": true},
+    {"name": "sbom",      "owner": "P3", "enabled": true,  "needs_image": true},
+    {"name": "dast",      "owner": "P3", "enabled": false, "needs_image": true}
+  ]
+}

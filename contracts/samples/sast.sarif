@@ -1,0 +1,121 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "semgrep",
+          "version": "1.78.0",
+          "informationUri": "https://semgrep.dev",
+          "rules": [
+            {
+              "id": "python.lang.security.audit.sqli.formatted-sql-query",
+              "shortDescription": {
+                "text": "SQL injection via string-formatted query"
+              },
+              "helpUri": "https://owasp.org/www-community/attacks/SQL_Injection"
+            },
+            {
+              "id": "python.lang.security.audit.md5-used-as-password",
+              "shortDescription": {
+                "text": "MD5 is cryptographically weak and must not be used for password hashing"
+              },
+              "helpUri": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"
+            },
+            {
+              "id": "python.flask.security.audit.app-run-debug-enabled",
+              "shortDescription": {
+                "text": "Flask debug mode enabled — exposes interactive debugger to all users"
+              },
+              "helpUri": "https://flask.palletsprojects.com/en/3.0.x/debugging/"
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "python.lang.security.audit.sqli.formatted-sql-query",
+          "level": "error",
+          "message": {
+            "text": "SQL injection: user-controlled input is concatenated directly into a SQL query in the '/users' endpoint. An attacker can manipulate the query to access or destroy data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "demo-app/vulnerable/app.py"
+                },
+                "region": {
+                  "startLine": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "High",
+            "category": "sast",
+            "raw_severity": "ERROR",
+            "cwe": "CWE-89",
+            "fix": "Use parameterized queries: cursor.execute('SELECT * FROM users WHERE name = ?', (name,))",
+            "confidence": "high"
+          }
+        },
+        {
+          "ruleId": "python.lang.security.audit.md5-used-as-password",
+          "level": "error",
+          "message": {
+            "text": "MD5 is used to hash passwords. MD5 is cryptographically broken and trivially reversible with rainbow tables."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "demo-app/vulnerable/app.py"
+                },
+                "region": {
+                  "startLine": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "High",
+            "category": "sast",
+            "raw_severity": "ERROR",
+            "cwe": "CWE-327",
+            "fix": "Use bcrypt, scrypt, or argon2 for password hashing.",
+            "confidence": "high"
+          }
+        },
+        {
+          "ruleId": "python.flask.security.audit.app-run-debug-enabled",
+          "level": "warning",
+          "message": {
+            "text": "Flask is started with debug=True. This enables an interactive debugger accessible to any network client, which is a critical security risk in production."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "demo-app/vulnerable/app.py"
+                },
+                "region": {
+                  "startLine": 66
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Medium",
+            "category": "sast",
+            "raw_severity": "WARNING",
+            "cwe": "CWE-94",
+            "fix": "Remove debug=True or use an environment variable: app.run(debug=os.getenv('FLASK_DEBUG', 'false').lower() == 'true')",
+            "confidence": "high"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+# .gitleaks.toml — Gitleaks configuration for the DevSecOps pipeline repo.
+#
+# PURPOSE: Suppress false positives from intentionally planted FAKE credentials
+# in demo-app/vulnerable/. Those fake keys exist purely to be detected by the
+# pipeline's secrets stage (V1a, V1b in seeded-vulnerabilities.md). They are
+# NOT real credentials and are NOT associated with any AWS account.
+#
+# Real secrets must NEVER appear in this repo. Any findings outside the
+# allowlisted paths below should be treated as genuine leaks.
+
+title = "DevSecOps Pipeline — Gitleaks Config"
+
+[allowlist]
+  description = "Intentionally planted FAKE credentials for scanner demo (see demo-app/seeded-vulnerabilities.md)"
+  paths = [
+    # The only file that intentionally contains fake key patterns
+    "demo-app/vulnerable/config.py",
+    # Ground-truth test that references the fake key pattern for verification
+    "demo-app/tests/test_seeded_vulns.py",
+    # The documentation files that describe the seeded vulnerabilities
+    "demo-app/seeded-vulnerabilities.md",
+    "demo-app/seeded-vulnerabilities.json",
+  ]

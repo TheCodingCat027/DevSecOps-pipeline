@@ -1,0 +1,91 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "trivy",
+          "version": "0.51.4",
+          "informationUri": "https://trivy.dev",
+          "rules": [
+            {
+              "id": "CVE-2023-44487",
+              "shortDescription": {
+                "text": "HTTP/2 Rapid Reset Attack (CVSS 7.5)"
+              }
+            },
+            {
+              "id": "CVE-2024-2961",
+              "shortDescription": {
+                "text": "glibc iconv buffer overflow"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CVE-2023-44487",
+          "level": "error",
+          "message": {
+            "text": "The base image python:3.9 contains a vulnerable version of the HTTP/2 stack susceptible to the Rapid Reset DDoS attack (CVE-2023-44487)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "demo-app/vulnerable/Dockerfile"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "High",
+            "category": "container",
+            "raw_severity": "HIGH",
+            "cve_id": "CVE-2023-44487",
+            "package": "golang.org/x/net",
+            "installed_version": "0.10.0",
+            "fixed_version": "0.17.0",
+            "fix_available": true,
+            "fix": "Use a more recent base image tag that includes the patched libraries."
+          }
+        },
+        {
+          "ruleId": "CVE-2024-2961",
+          "level": "error",
+          "message": {
+            "text": "The base image contains a vulnerable version of glibc with an iconv buffer overflow that can lead to remote code execution."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "demo-app/vulnerable/Dockerfile"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Critical",
+            "category": "container",
+            "raw_severity": "CRITICAL",
+            "cve_id": "CVE-2024-2961",
+            "package": "glibc",
+            "installed_version": "2.36-9+deb12u4",
+            "fixed_version": "2.36-9+deb12u7",
+            "fix_available": true,
+            "fix": "Use a newer base image that includes the patched glibc."
+          }
+        }
+      ]
+    }
+  ]
+}

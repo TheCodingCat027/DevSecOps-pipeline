@@ -1,0 +1,37 @@
+# security-policy.yaml — Baseline security policy for the DevSecOps pipeline
+#
+# This file is validated against contracts/policy.schema.json on every CI run.
+# P4 owns this file from Phase 4 onward and will tune the thresholds and add waivers.
+# See contracts/gate-interface.md for how the gate evaluates this policy.
+#
+# Amendment process: any change to this file in Phase 4+ should be recorded as a
+# comment with the date, author, and reason.
+
+version: 1
+
+# enforce: violations block deployment
+# audit:   violations are reported but never block
+mode: enforce
+
+secrets:
+  # Zero tolerance for committed secrets
+  max_allowed: 0
+
+vulnerabilities:
+  # Zero Critical CVEs allowed in production
+  critical: 0
+  # Up to 3 High-severity findings tolerated (adjust in Phase 4)
+  high: 3
+  medium: null   # unlimited — tracked but not enforced in Phase 1
+  low: null      # unlimited — tracked but not enforced in Phase 1
+
+container:
+  # Container must not run as root
+  must_run_as_non_root: true
+  # Do not allow images built from unversioned tags
+  banned_base_tags:
+    - "latest"
+
+# Waivers: empty in Phase 1 baseline.
+# P4 adds approved waivers here during Phase 4, following the process in contracts/CHANGELOG.md.
+waivers: []

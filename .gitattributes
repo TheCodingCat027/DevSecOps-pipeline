@@ -1,0 +1,28 @@
+# .gitattributes — Normalize line endings across platforms.
+# Ensures shell scripts always use LF (Unix), everything else uses auto.
+
+* text=auto
+
+# Shell scripts must always use LF (they break on Windows CRLF)
+*.sh text eol=lf
+
+# Dockerfiles use LF
+Dockerfile text eol=lf
+
+# Python, YAML, JSON, Markdown — auto-normalize
+*.py text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.toml text eol=lf
+
+# Binary files — no line-ending conversion
+*.tar binary
+*.tar.gz binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary

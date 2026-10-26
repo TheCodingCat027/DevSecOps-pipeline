@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devsecops-pipeline/contracts/finding.schema.json",
+  "title": "NormalizedFinding",
+  "description": "A single normalized security finding produced by any scanner stage and consumed by the gate.",
+  "type": "object",
+  "required": [
+    "tool",
+    "stage",
+    "category",
+    "rule_id",
+    "severity",
+    "file",
+    "line",
+    "description",
+    "fix"
+  ],
+  "properties": {
+    "tool": {
+      "type": "string",
+      "description": "The scanner that produced this finding (e.g. gitleaks, semgrep, trivy, hadolint, checkov, zap, syft).",
+      "minLength": 1
+    },
+    "stage": {
+      "type": "string",
+      "enum": ["secrets", "sast", "sca", "iac", "container", "sbom", "dast"],
+      "description": "The pipeline stage that produced this finding."
+    },
+    "category": {
+      "type": "string",
+      "enum": ["secret", "sast", "sca", "iac", "container", "dast"],
+      "description": "The security category of the finding."
+    },
+    "rule_id": {
+      "type": "string",
+      "description": "The scanner-specific rule or check identifier.",
+      "minLength": 1
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["Critical", "High", "Medium", "Low"],
+      "description": "Normalized severity level. Must be exactly one of these four values with this exact casing."
+    },
+    "file": {
+      "type": "string",
+      "description": "Repo-relative path to the file containing the finding.",
+      "minLength": 1
+    },
+    "line": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Line number (1-indexed). Use 0 for file-level findings."
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of the finding.",
+      "minLength": 1
+    },
+    "fix": {
+      "type": ["string", "null"],
+      "description": "Human-readable remediation guidance. null if no fix is known."
+    },
+
+    "id": {
+      "type": "string",
+      "description": "Stable fingerprint: SHA-256 of 'tool|rule_id|file|line'. Set by the normalizer (gate). Used for waiver matching.",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "cve_id": {
+      "type": "string",
+      "description": "CVE identifier if applicable (e.g. CVE-2023-12345). Used by P4 for SCA/container findings.",
+      "pattern": "^CVE-\\d{4}-\\d{4,}$"
+    },
+    "cwe": {
+      "type": "string",
+      "description": "CWE identifier if applicable (e.g. CWE-89). Used by P4 for SAST findings.",
+      "pattern": "^CWE-\\d+$"
+    },
+    "package": {
+      "type": "string",
+      "description": "Affected package name (for SCA/container findings). Used by P4."
+    },
+    "installed_version": {
+      "type": "string",
+      "description": "Currently installed version of the affected package. Used by P4."
+    },
+    "fixed_version": {
+      "type": "string",
+      "description": "Version in which the vulnerability is fixed. Used by P4."
+    },
+    "fix_available": {
+      "type": "boolean",
+      "description": "Whether a patched version is available. Used by P4 for prioritization."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Scanner confidence in this finding. Used by P4 for noise filtering."
+    },
+    "help_uri": {
+      "type": "string",
+      "format": "uri",
+      "description": "Link to rule documentation or advisory. Used by P4 in reports."
+    },
+    "raw_severity": {
+      "type": "string",
+      "description": "The original severity label from the tool before normalization (e.g. 'WARNING', 'CRITICAL'). Preserved for traceability."
+    },
+    "waived": {
+      "type": "boolean",
+      "description": "True if this finding has been waived by the gate. Set by the gate (P4) only, never by stages."
+    },
+    "waiver_id": {
+      "type": "string",
+      "description": "The waiver entry ID from security-policy.yaml that waived this finding. Set by the gate (P4) only."
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,3 @@
+This is not JSON at all.
+It is a plain text file that will be rejected by the SARIF validator
+because it cannot be parsed as JSON.

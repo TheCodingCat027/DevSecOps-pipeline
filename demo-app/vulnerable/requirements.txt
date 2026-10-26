@@ -1,0 +1,20 @@
+# Vulnerable Demo App Dependencies
+#
+# ⚠️  WARNING: These versions are INTENTIONALLY OUTDATED to demonstrate SCA scanning.
+# They contain known CVEs. DO NOT USE in production.
+# See demo-app/seeded-vulnerabilities.md for the CVE list.
+# Dependabot / Renovate are intentionally NOT configured for this folder.
+#
+# V3 — Outdated dependencies with known CVEs (detected by Trivy fs):
+#   Flask==1.1.4       — CVE-2023-30861 (response with session cookie may be cached by a shared proxy; missing Vary: Cookie)
+#   Jinja2==2.11.3     — CVE-2024-34064 (xmlattr filter accepts keys with spaces, enabling attribute injection (XSS))
+#   Werkzeug==1.0.1    — CVE-2023-25577 (multipart parsing DoS)
+#
+# Note: CVE status verified with pip-audit (2026-10-27); see seeded list.
+
+Flask==1.1.4
+Jinja2==2.11.3
+Werkzeug==1.0.1
+click==7.1.2
+itsdangerous==1.1.0
+MarkupSafe==1.1.1

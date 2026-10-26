@@ -1,0 +1,42 @@
+name: "Run Security Stage"
+description: "Thin composite action that runs a pipeline stage, validates its SARIF output, and uploads the report artifact."
+
+inputs:
+  stage:
+    description: "Name of the stage to run (e.g. secrets, sast, sca, iac, container, sbom, dast)"
+    required: true
+  target:
+    description: "Path to the target directory or artifact to scan"
+    required: true
+    default: "demo-app/vulnerable"
+  needs_image:
+    description: "Whether this stage requires IMAGE_REF to be set (true/false)"
+    required: false
+    default: "false"
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Run stage script"
+      shell: bash
+      env:
+        IMAGE_REF: ${{ env.IMAGE_REF }}
+        STAGE: ${{ inputs.stage }}
+        TARGET: ${{ inputs.target }}
+      run: |
+        echo "::group::Stage: $STAGE"
+        echo "[action] Running stage '$STAGE' against '$TARGET'"
+        mkdir -p reports
+        bash "stages/$STAGE/run.sh" "$TARGET" reports
+        echo "[action] Stage completed"
+        echo "::endgroup::"
+
+    - name: "Validate SARIF output"
+      shell: bash
+      env:
+        STAGE: ${{ inputs.stage }}
+      run: |
+        echo "::group::Validate: $STAGE.sarif"
+        python "contracts/validate.py" "reports/$STAGE.sarif" --stage "$STAGE"
+        echo "[action] Validation passed"
+        echo "::endgroup::"

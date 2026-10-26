@@ -1,0 +1,89 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+.eggs/
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.env/
+
+# Secret / environment files (never commit real .env — use .env.example instead)
+.env
+.env.local
+.env.*.local
+*.env
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+*.coveragerc
+coverage.xml
+
+# Node / npm (in case any tooling is added)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Pipeline outputs
+reports/
+out/
+gate-out/
+
+# Docker image exports
+*.tar
+*.tar.gz
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE folders
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+*.log
+
+# Temp
+*.tmp
+*.bak
+
+# OS
+Thumbs.db
+ehthumbs.db
+
+# SQLite / local databases (runtime data, not source)
+*.db
+*.sqlite
+*.sqlite3
+
+# Private keys / certificates (never commit)
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub

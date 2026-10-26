@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://devsecops-pipeline/contracts/policy.schema.json",
+  "title": "SecurityPolicy",
+  "description": "Schema for security-policy.yaml. Loaded with PyYAML and validated against this schema by the gate and contracts/validate.py.",
+  "type": "object",
+  "required": ["version", "mode", "secrets", "vulnerabilities", "container", "waivers"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema version. Must be 1. Increment requires a contract amendment."
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["enforce", "audit"],
+      "description": "enforce: policy violations block deployment. audit: violations are reported but never block."
+    },
+    "secrets": {
+      "type": "object",
+      "required": ["max_allowed"],
+      "properties": {
+        "max_allowed": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Maximum number of secret findings allowed before the gate fails."
+        }
+      },
+      "additionalProperties": false
+    },
+    "vulnerabilities": {
+      "type": "object",
+      "required": ["critical", "high", "medium", "low"],
+      "properties": {
+        "critical": {
+          "oneOf": [
+            {"type": "integer", "minimum": 0},
+            {"type": "null"}
+          ],
+          "description": "Max Critical-severity vulnerability findings. null means unlimited."
+        },
+        "high": {
+          "oneOf": [
+            {"type": "integer", "minimum": 0},
+            {"type": "null"}
+          ],
+          "description": "Max High-severity vulnerability findings. null means unlimited."
+        },
+        "medium": {
+          "oneOf": [
+            {"type": "integer", "minimum": 0},
+            {"type": "null"}
+          ],
+          "description": "Max Medium-severity vulnerability findings. null means unlimited."
+        },
+        "low": {
+          "oneOf": [
+            {"type": "integer", "minimum": 0},
+            {"type": "null"}
+          ],
+          "description": "Max Low-severity vulnerability findings. null means unlimited."
+        }
+      },
+      "additionalProperties": false
+    },
+    "container": {
+      "type": "object",
+      "required": ["must_run_as_non_root", "banned_base_tags"],
+      "properties": {
+        "must_run_as_non_root": {
+          "type": "boolean",
+          "description": "If true, the gate fails if the container image is configured to run as root."
+        },
+        "banned_base_tags": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "List of banned base image tags. Any Dockerfile FROM using one of these tags causes a gate failure."
+        }
+      },
+      "additionalProperties": false
+    },
+    "waivers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "reason", "expires", "approved_by"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Finding id (SHA-256 fingerprint), CVE ID, or rule_id to waive.",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "description": "Human-readable justification for the waiver.",
+            "minLength": 1
+          },
+          "expires": {
+            "type": "string",
+            "format": "date",
+            "description": "ISO 8601 date (YYYY-MM-DD) after which the waiver no longer applies."
+          },
+          "approved_by": {
+            "type": "string",
+            "description": "GitHub handle or name of the person who approved this waiver.",
+            "minLength": 1
+          },
+          "scope": {
+            "type": "string",
+            "description": "Optional file glob. If provided, the waiver only applies to findings in matching files."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "List of approved waivers. Evaluated by the gate (P4) in Phase 4."
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,115 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "hadolint",
+          "version": "2.12.0",
+          "informationUri": "https://github.com/hadolint/hadolint",
+          "rules": [
+            {
+              "id": "DL3002",
+              "shortDescription": {
+                "text": "Last USER should not be root"
+              },
+              "helpUri": "https://github.com/hadolint/hadolint/wiki/DL3002"
+            },
+            {
+              "id": "DL3007",
+              "shortDescription": {
+                "text": "Using latest is prone to errors if the image will ever update"
+              },
+              "helpUri": "https://github.com/hadolint/hadolint/wiki/DL3007"
+            },
+            {
+              "id": "CKV_DOCKER_2",
+              "shortDescription": {
+                "text": "Ensure that HEALTHCHECK instructions have been added to container images"
+              },
+              "helpUri": "https://docs.bridgecrew.io/docs/ensure-that-healthcheck-instructions-have-been-added-to-container-images"
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "DL3002",
+          "level": "error",
+          "message": {
+            "text": "The container runs as root because no USER instruction is present in the Dockerfile. Processes running as root inside a container have elevated privileges."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "demo-app/vulnerable/Dockerfile"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "High",
+            "category": "iac",
+            "raw_severity": "error",
+            "fix": "Add 'RUN useradd -r -u 1001 appuser && USER appuser' before the ENTRYPOINT/CMD instruction."
+          }
+        },
+        {
+          "ruleId": "DL3007",
+          "level": "error",
+          "message": {
+            "text": "Using 'python:3.9' without a specific digest or patch-level tag means the base image can change unexpectedly on each build, introducing unvetted changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "demo-app/vulnerable/Dockerfile"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "High",
+            "category": "iac",
+            "raw_severity": "error",
+            "fix": "Pin the base image to a specific digest: FROM python:3.12.4-slim@sha256:..."
+          }
+        },
+        {
+          "ruleId": "CKV_DOCKER_2",
+          "level": "warning",
+          "message": {
+            "text": "No HEALTHCHECK instruction found. Without a health check, the container orchestrator cannot detect application failures."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "demo-app/vulnerable/Dockerfile"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Medium",
+            "category": "iac",
+            "raw_severity": "warning",
+            "fix": "Add: HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:5000/health || exit 1"
+          }
+        }
+      ]
+    }
+  ]
+}
