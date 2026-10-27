@@ -1,0 +1,26 @@
+rules:
+  - id: devsecops-flask-debug-enabled
+    languages: [python]
+    severity: WARNING
+    message: >-
+      Flask is run with debug=True. The Werkzeug debugger exposes an interactive
+      console that allows arbitrary code execution to anyone who can reach the
+      server, and it leaks source code and configuration in error pages.
+    metadata:
+      category: security
+      cwe: "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+      owasp: "A05:2021 - Security Misconfiguration"
+      confidence: MEDIUM
+      likelihood: MEDIUM
+      impact: HIGH
+      technology: [python, flask]
+      remediation: "Do not hard-code debug=True. Read it from the environment, e.g. app.run(debug=os.environ.get('FLASK_DEBUG', 'false').lower() == 'true'), and never enable it in production."
+      references:
+        - https://flask.palletsprojects.com/en/stable/debugging/
+    patterns:
+      - pattern-either:
+          - pattern: $APP.run(..., debug=True, ...)
+          - pattern: $APP.debug = True
+      - pattern-inside: |
+          $APP = Flask(...)
+          ...

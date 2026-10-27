@@ -1,0 +1,1 @@
+matplotlib==3.10.8   # optional: only for the PNG charts; evaluate.py works without it (tables only)

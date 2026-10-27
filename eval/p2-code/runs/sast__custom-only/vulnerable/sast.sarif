@@ -1,0 +1,130 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "semgrep",
+          "version": "1.182.1",
+          "informationUri": "https://semgrep.dev",
+          "rules": [
+            {
+              "id": "devsecops-flask-debug-enabled",
+              "shortDescription": {
+                "text": "Flask is run with debug=True. The Werkzeug debugger exposes an interactive console that allows arbitrary code execution to anyone who can reach the server, and it leaks source code and configuration i"
+              },
+              "helpUri": "https://flask.palletsprojects.com/en/stable/debugging/"
+            },
+            {
+              "id": "devsecops-python-sql-injection-string-built-query",
+              "shortDescription": {
+                "text": "SQL injection risk: a query string built with concatenation, an f-string, str.format() or %-formatting is passed to a database execute call. Untrusted input placed in such a string can change the mean"
+              },
+              "helpUri": "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html"
+            },
+            {
+              "id": "devsecops-python-weak-hash-for-password",
+              "shortDescription": {
+                "text": "MD5 or SHA-1 is used to hash a password. These are fast, broken general-purpose digests: stolen hashes can be reversed with rainbow tables or brute force in seconds. Use a slow, salted password hash i"
+              },
+              "helpUri": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "devsecops-python-sql-injection-string-built-query",
+          "level": "error",
+          "message": {
+            "text": "SQL injection risk: a query string built with concatenation, an f-string, str.format() or %-formatting is passed to a database execute call. Untrusted input placed in such a string can change the meaning of the SQL statement."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "demo-app/vulnerable/app.py"
+                },
+                "region": {
+                  "startLine": 92
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "High",
+            "category": "sast",
+            "raw_severity": "ERROR",
+            "cwe": "CWE-89",
+            "fix": "Use a parameterized query and pass values separately, e.g. cursor.execute('SELECT id FROM users WHERE name = ?', (name,)).",
+            "confidence": "high",
+            "help_uri": "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html"
+          }
+        },
+        {
+          "ruleId": "devsecops-python-weak-hash-for-password",
+          "level": "error",
+          "message": {
+            "text": "MD5 or SHA-1 is used to hash a password. These are fast, broken general-purpose digests: stolen hashes can be reversed with rainbow tables or brute force in seconds. Use a slow, salted password hash instead."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "demo-app/vulnerable/app.py"
+                },
+                "region": {
+                  "startLine": 111
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "High",
+            "category": "sast",
+            "raw_severity": "ERROR",
+            "cwe": "CWE-327",
+            "fix": "Use a password hashing function such as hashlib.scrypt, bcrypt or argon2 with a per-user random salt.",
+            "confidence": "high",
+            "help_uri": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"
+          }
+        },
+        {
+          "ruleId": "devsecops-flask-debug-enabled",
+          "level": "warning",
+          "message": {
+            "text": "Flask is run with debug=True. The Werkzeug debugger exposes an interactive console that allows arbitrary code execution to anyone who can reach the server, and it leaks source code and configuration in error pages."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "demo-app/vulnerable/app.py"
+                },
+                "region": {
+                  "startLine": 137
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Medium",
+            "category": "sast",
+            "raw_severity": "WARNING",
+            "cwe": "CWE-94",
+            "fix": "Do not hard-code debug=True. Read it from the environment, e.g. app.run(debug=os.environ.get('FLASK_DEBUG', 'false').lower() == 'true'), and never enable it in production.",
+            "confidence": "medium",
+            "help_uri": "https://flask.palletsprojects.com/en/stable/debugging/"
+          }
+        }
+      ],
+      "properties": {
+        "custom_rules_enabled": true,
+        "registry_packs_requested": [],
+        "registry_packs_applied": false,
+        "scan_errors": 0
+      }
+    }
+  ]
+}

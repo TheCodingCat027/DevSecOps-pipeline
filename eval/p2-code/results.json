@@ -1,0 +1,662 @@
+{
+  "generated_at_utc": "2026-10-27T05:21:43Z",
+  "line_tolerance": 2,
+  "seeded_flaws_evaluated": [
+    {
+      "id": "V1a",
+      "stage": "secrets",
+      "file": "demo-app/vulnerable/config.py",
+      "line": 17,
+      "expected_rule_id": "aws-access-token",
+      "cve_ids": []
+    },
+    {
+      "id": "V1b",
+      "stage": "secrets",
+      "file": "demo-app/vulnerable/config.py",
+      "line": 18,
+      "expected_rule_id": "aws-secret-access-key",
+      "cve_ids": []
+    },
+    {
+      "id": "V2",
+      "stage": "sast",
+      "file": "demo-app/vulnerable/app.py",
+      "line": 91,
+      "expected_rule_id": "python.lang.security.audit.sqli.formatted-sql-query",
+      "cve_ids": []
+    },
+    {
+      "id": "V3a",
+      "stage": "sca",
+      "file": "demo-app/vulnerable/requirements.txt",
+      "line": 15,
+      "expected_rule_id": "CVE-2023-30861",
+      "cve_ids": [
+        "CVE-2023-30861"
+      ]
+    },
+    {
+      "id": "V3b",
+      "stage": "sca",
+      "file": "demo-app/vulnerable/requirements.txt",
+      "line": 16,
+      "expected_rule_id": "CVE-2024-34064",
+      "cve_ids": [
+        "CVE-2024-34064"
+      ]
+    },
+    {
+      "id": "V3c",
+      "stage": "sca",
+      "file": "demo-app/vulnerable/requirements.txt",
+      "line": 17,
+      "expected_rule_id": "CVE-2023-25577",
+      "cve_ids": [
+        "CVE-2023-25577"
+      ]
+    },
+    {
+      "id": "V6",
+      "stage": "sast",
+      "file": "demo-app/vulnerable/app.py",
+      "line": 111,
+      "expected_rule_id": "python.lang.security.audit.md5-used-as-password",
+      "cve_ids": []
+    },
+    {
+      "id": "V7",
+      "stage": "sast",
+      "file": "demo-app/vulnerable/app.py",
+      "line": 137,
+      "expected_rule_id": "python.flask.security.audit.app-run-debug-enabled",
+      "cve_ids": []
+    }
+  ],
+  "environment": {
+    "cold_timing_measured": true,
+    "warm_runs": 3,
+    "git_commit": "4c065d0"
+  },
+  "configs": {
+    "secrets/tuned": {
+      "stage": "secrets",
+      "config": "tuned",
+      "env": {},
+      "apps": {
+        "vulnerable": {
+          "exit_code": 0,
+          "seconds": 1.27,
+          "sarif": "runs/secrets__tuned/vulnerable/secrets.sarif",
+          "stderr_tail": [],
+          "tool": "gitleaks 8.30.1",
+          "run_properties": {},
+          "contract_validation": "valid",
+          "findings": [
+            {
+              "rule_id": "flask-hardcoded-secret-key",
+              "file": "demo-app/vulnerable/app.py",
+              "line": 22,
+              "severity": "High",
+              "raw_severity": "flask-hardcoded-secret-key",
+              "category": "secret",
+              "cve_id": null,
+              "cwe": null,
+              "package": null,
+              "confidence": "medium",
+              "fix_present": true,
+              "message": "Hard-coded application SECRET_KEY (session signing key) in source (flask-hardcoded-secret-key) detected at demo-app/vulnerable/app.py:22. The secret value is redacted from this report."
+            },
+            {
+              "rule_id": "aws-access-token",
+              "file": "demo-app/vulnerable/config.py",
+              "line": 17,
+              "severity": "Critical",
+              "raw_severity": "aws-access-token",
+              "category": "secret",
+              "cve_id": null,
+              "cwe": null,
+              "package": null,
+              "confidence": "high",
+              "fix_present": true,
+              "message": "Identified a pattern that may indicate AWS credentials, risking unauthorized cloud resource access and data breaches on AWS platforms (aws-access-token) detected at demo-app/vulnerable/config.py:17. The secret value is redacted from this report."
+            },
+            {
+              "rule_id": "aws-secret-access-key",
+              "file": "demo-app/vulnerable/config.py",
+              "line": 18,
+              "severity": "Critical",
+              "raw_severity": "aws-secret-access-key",
+              "category": "secret",
+              "cve_id": null,
+              "cwe": null,
+              "package": null,
+              "confidence": "high",
+              "fix_present": true,
+              "message": "Hard-coded AWS secret access key assignment (aws-secret-access-key) detected at demo-app/vulnerable/config.py:18. The secret value is redacted from this report."
+            },
+            {
+              "rule_id": "flask-hardcoded-secret-key",
+              "file": "demo-app/vulnerable/config.py",
+              "line": 24,
+              "severity": "High",
+              "raw_severity": "flask-hardcoded-secret-key",
+              "category": "secret",
+              "cve_id": null,
+              "cwe": null,
+              "package": null,
+              "confidence": "medium",
+              "fix_present": true,
+              "message": "Hard-coded application SECRET_KEY (session signing key) in source (flask-hardcoded-secret-key) detected at demo-app/vulnerable/config.py:24. The secret value is redacted from this report."
+            }
+          ],
+          "findings_count": 4,
+          "by_severity": {
+            "Critical": 2,
+            "High": 2,
+            "Medium": 0,
+            "Low": 0
+          },
+          "status": "ran"
+        },
+        "fixed": {
+          "exit_code": 0,
+          "seconds": 1.25,
+          "sarif": "runs/secrets__tuned/fixed/secrets.sarif",
+          "stderr_tail": [],
+          "tool": "gitleaks 8.30.1",
+          "run_properties": {},
+          "contract_validation": "valid",
+          "findings": [],
+          "findings_count": 0,
+          "by_severity": {
+            "Critical": 0,
+            "High": 0,
+            "Medium": 0,
+            "Low": 0
+          },
+          "status": "ran"
+        }
+      },
+      "per_flaw": [
+        {
+          "id": "V1a",
+          "detected": true,
+          "by_rule": "aws-access-token",
+          "line_delta": 0,
+          "severity": "Critical",
+          "rule_id_agrees": true
+        },
+        {
+          "id": "V1b",
+          "detected": true,
+          "by_rule": "aws-secret-access-key",
+          "line_delta": 0,
+          "severity": "Critical",
+          "rule_id_agrees": true
+        }
+      ],
+      "detected": 2,
+      "seeded": 2,
+      "unmatched_on_vulnerable": [
+        {
+          "rule_id": "flask-hardcoded-secret-key",
+          "file": "demo-app/vulnerable/app.py",
+          "line": 22,
+          "severity": "High",
+          "raw_severity": "flask-hardcoded-secret-key",
+          "category": "secret",
+          "cve_id": null,
+          "cwe": null,
+          "package": null,
+          "confidence": "medium",
+          "fix_present": true,
+          "message": "Hard-coded application SECRET_KEY (session signing key) in source (flask-hardcoded-secret-key) detected at demo-app/vulnerable/app.py:22. The secret value is redacted from this report."
+        },
+        {
+          "rule_id": "flask-hardcoded-secret-key",
+          "file": "demo-app/vulnerable/config.py",
+          "line": 24,
+          "severity": "High",
+          "raw_severity": "flask-hardcoded-secret-key",
+          "category": "secret",
+          "cve_id": null,
+          "cwe": null,
+          "package": null,
+          "confidence": "medium",
+          "fix_present": true,
+          "message": "Hard-coded application SECRET_KEY (session signing key) in source (flask-hardcoded-secret-key) detected at demo-app/vulnerable/config.py:24. The secret value is redacted from this report."
+        }
+      ]
+    },
+    "secrets/gitleaks-default": {
+      "stage": "secrets",
+      "config": "gitleaks-default",
+      "env": {
+        "SECRETS_CONFIG": "<path>"
+      },
+      "apps": {
+        "vulnerable": {
+          "exit_code": 0,
+          "seconds": 1.24,
+          "sarif": "runs/secrets__gitleaks-default/vulnerable/secrets.sarif",
+          "stderr_tail": [],
+          "tool": "gitleaks 8.30.1",
+          "run_properties": {},
+          "contract_validation": "valid",
+          "findings": [
+            {
+              "rule_id": "aws-access-token",
+              "file": "demo-app/vulnerable/config.py",
+              "line": 17,
+              "severity": "Critical",
+              "raw_severity": "aws-access-token",
+              "category": "secret",
+              "cve_id": null,
+              "cwe": null,
+              "package": null,
+              "confidence": "high",
+              "fix_present": true,
+              "message": "Identified a pattern that may indicate AWS credentials, risking unauthorized cloud resource access and data breaches on AWS platforms (aws-access-token) detected at demo-app/vulnerable/config.py:17. The secret value is redacted from this report."
+            }
+          ],
+          "findings_count": 1,
+          "by_severity": {
+            "Critical": 1,
+            "High": 0,
+            "Medium": 0,
+            "Low": 0
+          },
+          "status": "ran"
+        },
+        "fixed": {
+          "exit_code": 0,
+          "seconds": 1.26,
+          "sarif": "runs/secrets__gitleaks-default/fixed/secrets.sarif",
+          "stderr_tail": [],
+          "tool": "gitleaks 8.30.1",
+          "run_properties": {},
+          "contract_validation": "valid",
+          "findings": [],
+          "findings_count": 0,
+          "by_severity": {
+            "Critical": 0,
+            "High": 0,
+            "Medium": 0,
+            "Low": 0
+          },
+          "status": "ran"
+        }
+      },
+      "per_flaw": [
+        {
+          "id": "V1a",
+          "detected": true,
+          "by_rule": "aws-access-token",
+          "line_delta": 0,
+          "severity": "Critical",
+          "rule_id_agrees": true
+        },
+        {
+          "id": "V1b",
+          "detected": false,
+          "reason": "no secret finding for this flaw; nearest finding in the same file: aws-access-token at line 17"
+        }
+      ],
+      "detected": 1,
+      "seeded": 2,
+      "unmatched_on_vulnerable": []
+    },
+    "sast/custom+registry": {
+      "stage": "sast",
+      "config": "custom+registry",
+      "env": {},
+      "apps": {
+        "vulnerable": {
+          "exit_code": 1,
+          "seconds": 0.99,
+          "sarif": null,
+          "stderr_tail": [
+            "[sast] ERROR: semgrep failed (exit 2, registry unreachable). Set SAST_ALLOW_OFFLINE=1 to accept a local-rules-only scan, or SAST_REGISTRY_PACKS= to disable the registry"
+          ],
+          "status": "not run",
+          "not_run_reason": "[sast] ERROR: semgrep failed (exit 2, registry unreachable). Set SAST_ALLOW_OFFLINE=1 to accept a local-rules-only scan, or SAST_REGISTRY_PACKS= to disable the registry"
+        },
+        "fixed": {
+          "exit_code": 1,
+          "seconds": 0.91,
+          "sarif": null,
+          "stderr_tail": [
+            "[sast] ERROR: semgrep failed (exit 2, registry unreachable). Set SAST_ALLOW_OFFLINE=1 to accept a local-rules-only scan, or SAST_REGISTRY_PACKS= to disable the registry"
+          ],
+          "status": "not run",
+          "not_run_reason": "[sast] ERROR: semgrep failed (exit 2, registry unreachable). Set SAST_ALLOW_OFFLINE=1 to accept a local-rules-only scan, or SAST_REGISTRY_PACKS= to disable the registry"
+        }
+      },
+      "per_flaw": null,
+      "detected": null,
+      "seeded": 3,
+      "unmatched_on_vulnerable": null
+    },
+    "sast/custom-only": {
+      "stage": "sast",
+      "config": "custom-only",
+      "env": {
+        "SAST_REGISTRY_PACKS": ""
+      },
+      "apps": {
+        "vulnerable": {
+          "exit_code": 0,
+          "seconds": 2.46,
+          "sarif": "runs/sast__custom-only/vulnerable/sast.sarif",
+          "stderr_tail": [],
+          "tool": "semgrep 1.182.1",
+          "run_properties": {
+            "custom_rules_enabled": true,
+            "registry_packs_requested": [],
+            "registry_packs_applied": false,
+            "scan_errors": 0
+          },
+          "contract_validation": "valid",
+          "findings": [
+            {
+              "rule_id": "devsecops-python-sql-injection-string-built-query",
+              "file": "demo-app/vulnerable/app.py",
+              "line": 92,
+              "severity": "High",
+              "raw_severity": "ERROR",
+              "category": "sast",
+              "cve_id": null,
+              "cwe": "CWE-89",
+              "package": null,
+              "confidence": "high",
+              "fix_present": true,
+              "message": "SQL injection risk: a query string built with concatenation, an f-string, str.format() or %-formatting is passed to a database execute call. Untrusted input placed in such a string can change the meaning of the SQL statement."
+            },
+            {
+              "rule_id": "devsecops-python-weak-hash-for-password",
+              "file": "demo-app/vulnerable/app.py",
+              "line": 111,
+              "severity": "High",
+              "raw_severity": "ERROR",
+              "category": "sast",
+              "cve_id": null,
+              "cwe": "CWE-327",
+              "package": null,
+              "confidence": "high",
+              "fix_present": true,
+              "message": "MD5 or SHA-1 is used to hash a password. These are fast, broken general-purpose digests: stolen hashes can be reversed with rainbow tables or brute force in seconds. Use a slow, salted password hash instead."
+            },
+            {
+              "rule_id": "devsecops-flask-debug-enabled",
+              "file": "demo-app/vulnerable/app.py",
+              "line": 137,
+              "severity": "Medium",
+              "raw_severity": "WARNING",
+              "category": "sast",
+              "cve_id": null,
+              "cwe": "CWE-94",
+              "package": null,
+              "confidence": "medium",
+              "fix_present": true,
+              "message": "Flask is run with debug=True. The Werkzeug debugger exposes an interactive console that allows arbitrary code execution to anyone who can reach the server, and it leaks source code and configuration in error pages."
+            }
+          ],
+          "findings_count": 3,
+          "by_severity": {
+            "Critical": 0,
+            "High": 2,
+            "Medium": 1,
+            "Low": 0
+          },
+          "status": "ran"
+        },
+        "fixed": {
+          "exit_code": 0,
+          "seconds": 2.49,
+          "sarif": "runs/sast__custom-only/fixed/sast.sarif",
+          "stderr_tail": [],
+          "tool": "semgrep 1.182.1",
+          "run_properties": {
+            "custom_rules_enabled": true,
+            "registry_packs_requested": [],
+            "registry_packs_applied": false,
+            "scan_errors": 0
+          },
+          "contract_validation": "valid",
+          "findings": [],
+          "findings_count": 0,
+          "by_severity": {
+            "Critical": 0,
+            "High": 0,
+            "Medium": 0,
+            "Low": 0
+          },
+          "status": "ran"
+        }
+      },
+      "per_flaw": [
+        {
+          "id": "V2",
+          "detected": true,
+          "by_rule": "devsecops-python-sql-injection-string-built-query",
+          "line_delta": 1,
+          "severity": "High",
+          "rule_id_agrees": false
+        },
+        {
+          "id": "V6",
+          "detected": true,
+          "by_rule": "devsecops-python-weak-hash-for-password",
+          "line_delta": 0,
+          "severity": "High",
+          "rule_id_agrees": false
+        },
+        {
+          "id": "V7",
+          "detected": true,
+          "by_rule": "devsecops-flask-debug-enabled",
+          "line_delta": 0,
+          "severity": "Medium",
+          "rule_id_agrees": false
+        }
+      ],
+      "detected": 3,
+      "seeded": 3,
+      "unmatched_on_vulnerable": []
+    },
+    "sast/registry-only": {
+      "stage": "sast",
+      "config": "registry-only",
+      "env": {
+        "SAST_CUSTOM_RULES": "0"
+      },
+      "apps": {
+        "vulnerable": {
+          "exit_code": 1,
+          "seconds": 0.92,
+          "sarif": null,
+          "stderr_tail": [
+            "[sast] ERROR: semgrep failed (exit 2, registry unreachable). Set SAST_ALLOW_OFFLINE=1 to accept a local-rules-only scan, or SAST_REGISTRY_PACKS= to disable the registry"
+          ],
+          "status": "not run",
+          "not_run_reason": "[sast] ERROR: semgrep failed (exit 2, registry unreachable). Set SAST_ALLOW_OFFLINE=1 to accept a local-rules-only scan, or SAST_REGISTRY_PACKS= to disable the registry"
+        },
+        "fixed": {
+          "exit_code": 1,
+          "seconds": 0.92,
+          "sarif": null,
+          "stderr_tail": [
+            "[sast] ERROR: semgrep failed (exit 2, registry unreachable). Set SAST_ALLOW_OFFLINE=1 to accept a local-rules-only scan, or SAST_REGISTRY_PACKS= to disable the registry"
+          ],
+          "status": "not run",
+          "not_run_reason": "[sast] ERROR: semgrep failed (exit 2, registry unreachable). Set SAST_ALLOW_OFFLINE=1 to accept a local-rules-only scan, or SAST_REGISTRY_PACKS= to disable the registry"
+        }
+      },
+      "per_flaw": null,
+      "detected": null,
+      "seeded": 3,
+      "unmatched_on_vulnerable": null
+    },
+    "sca/default": {
+      "stage": "sca",
+      "config": "default",
+      "env": {},
+      "apps": {
+        "vulnerable": {
+          "exit_code": 1,
+          "seconds": 4.31,
+          "sarif": null,
+          "stderr_tail": [
+            "[sca] ERROR: could not obtain the Trivy vulnerability DB (network blocked? set SCA_DB_REPOSITORY to a reachable mirror)"
+          ],
+          "status": "not run",
+          "not_run_reason": "[sca] ERROR: could not obtain the Trivy vulnerability DB (network blocked? set SCA_DB_REPOSITORY to a reachable mirror)"
+        },
+        "fixed": {
+          "exit_code": 1,
+          "seconds": 4.31,
+          "sarif": null,
+          "stderr_tail": [
+            "[sca] ERROR: could not obtain the Trivy vulnerability DB (network blocked? set SCA_DB_REPOSITORY to a reachable mirror)"
+          ],
+          "status": "not run",
+          "not_run_reason": "[sca] ERROR: could not obtain the Trivy vulnerability DB (network blocked? set SCA_DB_REPOSITORY to a reachable mirror)"
+        }
+      },
+      "per_flaw": null,
+      "detected": null,
+      "seeded": 3,
+      "unmatched_on_vulnerable": null
+    }
+  },
+  "timing": {
+    "secrets": {
+      "config": "tuned",
+      "warm_seconds": [
+        1.26,
+        1.27,
+        1.27
+      ],
+      "warm_median": 1.27,
+      "cold_install_seconds": 0.81,
+      "deterministic_across_warm_runs": true
+    },
+    "sast": {
+      "config": "custom-only",
+      "warm_seconds": [
+        2.56,
+        2.5,
+        2.44
+      ],
+      "warm_median": 2.5,
+      "cold_install_seconds": 14.5,
+      "deterministic_across_warm_runs": true
+    },
+    "sca": {
+      "config": null,
+      "warm_seconds": [],
+      "warm_median": null,
+      "cold_install_seconds": null,
+      "deterministic_across_warm_runs": null,
+      "note": "not run (see configs)"
+    }
+  },
+  "primary_config": {
+    "secrets": "tuned",
+    "sast": "custom-only"
+  },
+  "headline": {
+    "per_stage": {
+      "secrets": {
+        "config": "tuned",
+        "seeded": 2,
+        "detected": 2,
+        "detection_rate": 1.0,
+        "strict_default_ran": true
+      },
+      "sast": {
+        "config": "custom-only",
+        "seeded": 3,
+        "detected": 3,
+        "detection_rate": 1.0,
+        "strict_default_ran": false
+      },
+      "sca": {
+        "config": null,
+        "seeded": 3,
+        "detected": null,
+        "detection_rate": null,
+        "strict_default_ran": false
+      }
+    },
+    "overall_seeded": 8,
+    "overall_evaluated_seeded": 5,
+    "overall_detected": 5,
+    "overall_rate_among_evaluated": 1.0,
+    "overall_rate_not_run_counted_as_missed": 0.625
+  },
+  "fixed_app_findings": {
+    "secrets/tuned": {
+      "status": "ran",
+      "count": 0,
+      "findings": []
+    },
+    "secrets/gitleaks-default": {
+      "status": "ran",
+      "count": 0,
+      "findings": []
+    },
+    "sast/custom+registry": {
+      "status": "not run",
+      "reason": "[sast] ERROR: semgrep failed (exit 2, registry unreachable). Set SAST_ALLOW_OFFLINE=1 to accept a local-rules-only scan, or SAST_REGISTRY_PACKS= to disable the registry"
+    },
+    "sast/custom-only": {
+      "status": "ran",
+      "count": 0,
+      "findings": []
+    },
+    "sast/registry-only": {
+      "status": "not run",
+      "reason": "[sast] ERROR: semgrep failed (exit 2, registry unreachable). Set SAST_ALLOW_OFFLINE=1 to accept a local-rules-only scan, or SAST_REGISTRY_PACKS= to disable the registry"
+    },
+    "sca/default": {
+      "status": "not run",
+      "reason": "[sca] ERROR: could not obtain the Trivy vulnerability DB (network blocked? set SCA_DB_REPOSITORY to a reachable mirror)"
+    }
+  },
+  "unmatched_primary": [
+    {
+      "stage": "secrets",
+      "config": "tuned",
+      "rule_id": "flask-hardcoded-secret-key",
+      "file": "demo-app/vulnerable/app.py",
+      "line": 22,
+      "severity": "High",
+      "raw_severity": "flask-hardcoded-secret-key",
+      "category": "secret",
+      "cve_id": null,
+      "cwe": null,
+      "package": null,
+      "confidence": "medium",
+      "fix_present": true,
+      "message": "Hard-coded application SECRET_KEY (session signing key) in source (flask-hardcoded-secret-key) detected at demo-app/vulnerable/app.py:22. The secret value is redacted from this report."
+    },
+    {
+      "stage": "secrets",
+      "config": "tuned",
+      "rule_id": "flask-hardcoded-secret-key",
+      "file": "demo-app/vulnerable/config.py",
+      "line": 24,
+      "severity": "High",
+      "raw_severity": "flask-hardcoded-secret-key",
+      "category": "secret",
+      "cve_id": null,
+      "cwe": null,
+      "package": null,
+      "confidence": "medium",
+      "fix_present": true,
+      "message": "Hard-coded application SECRET_KEY (session signing key) in source (flask-hardcoded-secret-key) detected at demo-app/vulnerable/config.py:24. The secret value is redacted from this report."
+    }
+  ]
+}

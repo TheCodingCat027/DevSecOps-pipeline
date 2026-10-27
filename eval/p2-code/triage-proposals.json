@@ -1,0 +1,9 @@
+[
+  {
+    "stage": "secrets",
+    "rule_id": "flask-hardcoded-secret-key",
+    "file": "demo-app/vulnerable/*",
+    "verdict": "true positive not in seed list",
+    "justification": "Literal Flask SECRET_KEY in source (value labelled 'dev-secret-key-not-for-production'). A fixed session-signing key lets anyone forge session cookies if it reaches production; demo-app/fixed replaces it with os.environ['SECRET_KEY'] (config.py:19-21), i.e. Phase 1 treats it as a flaw too, yet seeded-vulnerabilities.json does not list it. Suggest adding it to the seed list (see docs/p2-requests-to-p1.md)."
+  }
+]

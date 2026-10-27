@@ -1,0 +1,130 @@
+{
+  "_comment": "SYNTHETIC test fixture. Hand-written in the Trivy 0.76 JSON schema (SchemaVersion 2) to mimic a scan of demo-app/vulnerable; NOT output of a real scan and NOT a statement about which CVEs a real Trivy DB reports. Deliberately has no Packages[].Locations so that the converter's manifest line lookup is exercised.",
+  "SchemaVersion": 2,
+  "Trivy": {
+    "Version": "0.76.1"
+  },
+  "ArtifactName": "synthetic",
+  "ArtifactType": "filesystem",
+  "Results": [
+    {
+      "Target": "requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Packages": [
+        {
+          "Name": "Flask",
+          "Version": "1.1.4"
+        },
+        {
+          "Name": "Jinja2",
+          "Version": "2.11.3"
+        },
+        {
+          "Name": "Werkzeug",
+          "Version": "1.0.1"
+        }
+      ],
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2023-30861",
+          "PkgName": "Flask",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/flask@1.1.4"
+          },
+          "InstalledVersion": "1.1.4",
+          "FixedVersion": "2.2.5, 2.3.2",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-30861",
+          "Title": "flask: Possible disclosure of permanent session cookie due to missing Vary: Cookie header",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-539"
+          ]
+        },
+        {
+          "VulnerabilityID": "CVE-2024-34064",
+          "PkgName": "Jinja2",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/jinja2@2.11.3"
+          },
+          "InstalledVersion": "2.11.3",
+          "FixedVersion": "3.1.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-34064",
+          "Title": "jinja2: accepts keys containing non-attribute characters",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-79"
+          ]
+        },
+        {
+          "VulnerabilityID": "CVE-2023-25577",
+          "PkgName": "Werkzeug",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/werkzeug@1.0.1"
+          },
+          "InstalledVersion": "1.0.1",
+          "FixedVersion": "2.2.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-25577",
+          "Title": "werkzeug: high resource usage when parsing multipart form data with many fields",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400"
+          ]
+        },
+        {
+          "VulnerabilityID": "GHSA-xxxx-0000-yyyy",
+          "PkgName": "Werkzeug",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/werkzeug@1.0.1"
+          },
+          "InstalledVersion": "1.0.1",
+          "FixedVersion": "",
+          "Status": "affected",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/ghsa-xxxx-0000-yyyy",
+          "Title": "synthetic GHSA-only advisory without a fix",
+          "Severity": "WEIRD",
+          "CweIDs": []
+        },
+        {
+          "VulnerabilityID": "CVE-2023-25577",
+          "PkgName": "Werkzeug",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/werkzeug@1.0.1"
+          },
+          "InstalledVersion": "1.0.1",
+          "FixedVersion": "2.2.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-25577",
+          "Title": "duplicate entry that must be collapsed",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400"
+          ]
+        },
+        {
+          "VulnerabilityID": "CVE-2000-00001",
+          "PkgName": "MarkupSafe",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/markupsafe@1.1.1"
+          },
+          "InstalledVersion": "1.1.1",
+          "FixedVersion": "",
+          "Status": "affected",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2000-00001",
+          "Title": "synthetic UNKNOWN-severity entry",
+          "Severity": "UNKNOWN",
+          "CweIDs": []
+        }
+      ]
+    }
+  ]
+}

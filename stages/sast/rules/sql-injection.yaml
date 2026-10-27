@@ -1,0 +1,40 @@
+rules:
+  - id: devsecops-python-sql-injection-string-built-query
+    languages: [python]
+    severity: ERROR
+    mode: taint
+    message: >-
+      SQL injection risk: a query string built with concatenation, an f-string,
+      str.format() or %-formatting is passed to a database execute call. Untrusted
+      input placed in such a string can change the meaning of the SQL statement.
+    metadata:
+      category: security
+      cwe: "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+      owasp: "A03:2021 - Injection"
+      confidence: HIGH
+      likelihood: HIGH
+      impact: HIGH
+      technology: [python, sqlite3, dbapi]
+      remediation: "Use a parameterized query and pass values separately, e.g. cursor.execute('SELECT id FROM users WHERE name = ?', (name,))."
+      references:
+        - https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html
+    pattern-sources:
+      # A string that is *built* at run time. Plain literals and parameterized
+      # queries are not sources, so they can never reach the sink.
+      - patterns:
+          - pattern-either:
+              - pattern: '"..." + $X'
+              - pattern: $X + "..."
+              - pattern: 'f"...{$X}..."'
+              - pattern: '"...".format(...)'
+              - pattern: '"..." % $X'
+          - pattern-not: '"..." + "..."'
+          - pattern-not: '"..." % "..."'
+    pattern-sinks:
+      # sqlite3 / DB-API 2.0 connections and cursors (psycopg2, mysql, pymysql, ...).
+      - patterns:
+          - pattern-either:
+              - pattern: $DB.execute($SQL, ...)
+              - pattern: $DB.executemany($SQL, ...)
+              - pattern: $DB.executescript($SQL, ...)
+          - focus-metavariable: $SQL

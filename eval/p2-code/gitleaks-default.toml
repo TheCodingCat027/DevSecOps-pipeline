@@ -1,0 +1,7 @@
+# Evaluation baseline: the untouched upstream Gitleaks ruleset (no custom rules, no allowlist).
+# Used only by eval/p2-code/evaluate.py through SECRETS_CONFIG to measure what the tuning in
+# stages/secrets/gitleaks.toml adds.
+title = "gitleaks default ruleset (evaluation baseline)"
+
+[extend]
+useDefault = true
